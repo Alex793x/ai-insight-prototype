@@ -1,12 +1,10 @@
-import ExecutiveSummaryPage from "@/templates/ExcecutiveSummaryPage"
+import ExecutiveSummaryPage from "@/templates/ExecutiveSummaryPage"
 
 
 const Summary = () => {
-
     return (
         <ExecutiveSummaryPage />
     )
-
 }
 
 export default Summary
