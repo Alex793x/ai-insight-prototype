@@ -11,30 +11,38 @@ const SummaryDetails = () => {
   const jsonTopicData = useContext(DataContext);
   const [summary, setSummary] = useState<Summary[]>([]);
   const [topicData, setTopicData] = useState<TopicComments[]>([]);
-  const { dataTopic, dataSubTopic } = useContext(SelectedSummaryTopicContext);
+  const { dataTopic, dataSubTopic, isLCA } = useContext(
+    SelectedSummaryTopicContext
+  );
 
   useEffect(() => {
     const handleDataSet = () => {
-      switch (dataTopic) {
-        case Topic.OPPORTUNITIES:
-          setSummary(summaryData.opportunitySummary);
-          setTopicData(jsonTopicData.opportunityData);
-          break;
-        case Topic.OPERATIONS:
-          setSummary(summaryData.operationSummary);
-          setTopicData(jsonTopicData.operationData);
-          break;
-        case Topic.LEARNINGS:
-          setSummary(summaryData.learningsSummary);
-          setTopicData(jsonTopicData.learningsData);
-          break;
-        case Topic.GAPS:
-          setSummary(summaryData.gapsSummary);
-          setTopicData(jsonTopicData.gapsData);
+      console.log("IS LCA ========> ", isLCA);
+      if (isLCA) {
+        setSummary(summaryData.lcaSummary);
+        setTopicData(jsonTopicData.lcaData);
+      } else {
+        switch (dataTopic) {
+          case Topic.OPPORTUNITIES:
+            setSummary(summaryData.opportunitySummary);
+            setTopicData(jsonTopicData.opportunityData);
+            break;
+          case Topic.OPERATIONS:
+            setSummary(summaryData.operationSummary);
+            setTopicData(jsonTopicData.operationData);
+            break;
+          case Topic.LEARNINGS:
+            setSummary(summaryData.learningsSummary);
+            setTopicData(jsonTopicData.learningsData);
+            break;
+          case Topic.GAPS:
+            setSummary(summaryData.gapsSummary);
+            setTopicData(jsonTopicData.gapsData);
+        }
       }
     };
     handleDataSet();
-  }, [dataTopic, jsonTopicData, summaryData]);
+  }, [dataTopic, isLCA, jsonTopicData, summaryData]);
 
   const filterTopicDataBySubtopic = useCallback(() => {
     return topicData.filter((item) => item.subtopic === dataSubTopic);
@@ -53,7 +61,7 @@ const SummaryDetails = () => {
     ? filteredSubtopicData[0].summary.split(".")
     : [];
 
-  console.log("filteredSingleSubtopicData   ", filteredSingleSubtopicData);
+  console.log("SUMMARY   ", summary);
 
   return (
     <div className="flex flex-col w-full">

@@ -13,6 +13,8 @@ interface SelectedSummaryTopicContextType {
   setDataTopic: Dispatch<SetStateAction<Topic>>;
   dataSubTopic: string | null;
   setDataSubTopic: Dispatch<SetStateAction<string>>;
+  isLCA: boolean;
+  setIsLCA: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const defaultSelectedSummaryTopicContextType: SelectedSummaryTopicContextType =
@@ -21,6 +23,8 @@ const defaultSelectedSummaryTopicContextType: SelectedSummaryTopicContextType =
     setDataTopic: () => {},
     dataSubTopic: null,
     setDataSubTopic: () => {},
+    isLCA: false,
+    setIsLCA: () => {},
   };
 
 export const SelectedSummaryTopicContext =
@@ -35,9 +39,17 @@ export const SelectedSummaryTopicContextProvider = ({
 }) => {
   const [dataTopic, setDataTopic] = useState<Topic>(Topic.OPPORTUNITIES);
   const [dataSubTopic, setDataSubTopic] = useState<string>("");
+  const [isLCA, setIsLCA] = useState<boolean>(false);
   return (
     <SelectedSummaryTopicContext.Provider
-      value={{ dataTopic, setDataTopic, dataSubTopic, setDataSubTopic }}
+      value={{
+        dataTopic,
+        setDataTopic,
+        dataSubTopic,
+        setDataSubTopic,
+        isLCA,
+        setIsLCA,
+      }}
     >
       {children}
     </SelectedSummaryTopicContext.Provider>
