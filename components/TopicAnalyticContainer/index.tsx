@@ -22,11 +22,8 @@ type Props = {
 const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
     const jsonData = useContext(DataContext)
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    const [countries, setCountries] = useState([]);
-    const [currentTopic, setCurrentTopic] = useState<Topic>()
+    const [currentTopic, setCurrentTopic] = useState<Topic>(Topic.OPPORTUNITIES)
     const [data, setData] = useState<TopicComments[]>([])
-    const [filteredDataTopic, setFilteredDataTopics] = useState<TopicComments[]>([]);
-
     const [isFiltering, setIsFiltering] = useState(false);
 
     const filterByChosenCountries = () => {
@@ -42,15 +39,19 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
     const handleDataSet = () => {
         switch (topic) {
             case Topic.OPPORTUNITIES:
+                setCurrentTopic(topic)
                 setData(jsonData.opportunityData)
                 break;
             case Topic.OPERATIONS:
+                setCurrentTopic(topic)
                 setData(jsonData.operationData)
                 break;
             case Topic.LEARNINGS:
+                setCurrentTopic(topic)
                 setData(jsonData.learningsData);
                 break;
             case Topic.GAPS:
+                setCurrentTopic(topic)
                 setData(jsonData.gapsData);
         }
     }
@@ -77,7 +78,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
                     </CardBody>
                     <CardBody>
                         <div className="flex">
-                            <CustomPieChart inputData={data} />
+                            <CustomPieChart currentTopic={currentTopic} inputData={data} />
                         </div>
                     </CardBody>
                 </div>
@@ -105,7 +106,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
                             <CardBody>
                                 <div className="flex flex-col items-center justify-center"> {/* Center content vertically and horizontally */}
                                     <h3 className="text-lg font-serif font-bold mb-4">{country}</h3> {/* Display the country name with margin bottom */}
-                                    <CustomPieChart inputData={data} />
+                                    <CustomPieChart currentTopic={currentTopic} inputData={data} />
                                 </div>
                             </CardBody>
                         </Card>

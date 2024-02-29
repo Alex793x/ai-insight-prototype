@@ -2,6 +2,12 @@
 import React from 'react'
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import { TopicComments } from '@/types/TopicComments';
+import { Topic } from '@/types/Topic';
+import { useRouter } from 'next/router';
+
+
+
+
 
 export const countSubtopicOccurrences = (topicCommentsList: TopicComments[]): { value: number, label: string }[] => {
 
@@ -25,20 +31,36 @@ const size = {
 };
 
 type Props = {
-  inputData: TopicComments[]
+  inputData: TopicComments[];
+  currentTopic: Topic
 
 }
 
-const CustomPieChart = ({inputData}: Props) => {
-  const data = countSubtopicOccurrences(inputData);
+const CustomPieChart = ({inputData, currentTopic}: Props) => {
+  const router = useRouter();
+
+  const subTopicOccurencesData = countSubtopicOccurrences(inputData);
+
+
+  const handleClick = (event: any, data: any) => {
+    const subTopicLabel = subTopicOccurencesData[data.dataIndex].label;
+    console.log(subTopicLabel);
+
+
+    router.push({
+      pathname: '/summary', // Specify the destination path
+      query: { sub_topic: subTopicLabel, topic: currentTopic },
+    });
+  };
 
   return (
     <PieChart
-      series={[
+    onClick={(event, data) => handleClick(event, data)}
+    series={[
         {
           arcLabel: (item) => `${item.value}`,
           arcLabelMinAngle: 10,
-          data,
+          data: subTopicOccurencesData,
         },
       ]}
       sx={{
