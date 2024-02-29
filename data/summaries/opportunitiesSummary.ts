@@ -10,7 +10,7 @@ export const OPPORTUNITIES_SUMMARY: Summary[] = [
       "The success of AI in Ramboll is dependent on the education of employees. An understanding of AI is crucial for its effective implementation. Regular updates through monthly newsletters about AI's role in Ramboll are suggested.",
   },
   {
-    subtopic: "Emissions Target Update",
+    subtopic: "Emissions Targets Update",
     number_of_rows: 1,
     all_comments:
       'translated from English:\nWould be interesting to see the 2024-version of the scheme "% Emissions Related to Ramboll\'s Absolute Targets (from 2019)" presented in this module.',
@@ -18,7 +18,7 @@ export const OPPORTUNITIES_SUMMARY: Summary[] = [
       'The user expressed interest in viewing the 2024-version of the "% Emissions Related to Ramboll\'s Absolute Targets (from 2019)" scheme. This scheme is presented in the current module. They wish to see its updated version.',
   },
   {
-    subtopic: "Fire Simulation Improvement",
+    subtopic: "Fire Simulation Innovations",
     number_of_rows: 1,
     all_comments:
       "Use AI to make decisions for fire simulation. AI can be a huge bank for ideas and previously simulations with results, which can gather all previous simulations. And help us do new simulations that has not been done before. There is a lot of opportunities in fire simulations, fire technical solutions and more.",

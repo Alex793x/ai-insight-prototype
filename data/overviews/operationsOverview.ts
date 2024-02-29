@@ -48,7 +48,7 @@ export const OPERATIONS_OVERVIEW: TopicComments[] = [
     description:
       "Use AI to make decisions for fire simulation. AI can be a huge bank for ideas and previously simulations with results, which can gather all previous simulations. And help us do new simulations that has not been done before. There is a lot of opportunities in fire simulations, fire technical solutions and more. ",
     label: "Both own operations and projects",
-    country: "Sweden",
+    country: "Finland",
     category: "Content",
     comments_eng:
       "Use AI to make decisions for fire simulation. AI can be a huge bank for ideas and previously simulations with results, which can gather all previous simulations. And help us do new simulations that has not been done before. There is a lot of opportunities in fire simulations, fire technical solutions and more.",

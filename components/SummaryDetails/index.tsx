@@ -12,19 +12,48 @@ import { SelectedSummaryTopicContext } from "../../contexts/SelectedSummaryJson"
 const SummaryDetails = () => {
   const topicData = useContext(DataContext);
   const summaryData = useContext(SummaryContext);
-  const [currentTopic, setCurrentTopic] = useState<Topic>(Topic.OPPORTUNITIES);
   const [filteredTopicData, setTopicData] = useState<TopicComments[]>([]);
   const [summary, setSummary] = useState<Summary[]>([]);
 
   const { dataTopic, dataSubTopic } = useContext(SelectedSummaryTopicContext);
 
-  const subTopic = "Sustainability Training";
-  const topic = Topic.OPPORTUNITIES; // Are these dynamic from query parameters?
+  console.log("dataTopic... ", dataTopic);
+  console.log("dataSubTopic... ", dataSubTopic);
+
+  useEffect(() => {
+    const handleDataSet = () => {
+      switch (dataTopic) {
+        case Topic.OPPORTUNITIES:
+          setSummary(summaryData.opportunitySummary);
+          break;
+        case Topic.OPERATIONS:
+          setSummary(summaryData.operationSummary);
+          break;
+        case Topic.LEARNINGS:
+          setSummary(summaryData.learningsSummary);
+          break;
+        case Topic.GAPS:
+          setSummary(summaryData.gapsSummary);
+      }
+    };
+    handleDataSet();
+  }, [
+    dataTopic,
+    summaryData.gapsSummary,
+    summaryData.learningsSummary,
+    summaryData.operationSummary,
+    summaryData.opportunitySummary,
+  ]);
+
+  console.log("SUMMARY... ", summary);
+
+  // const subTopic = "Sustainability Training";
+  // const topic = Topic.OPPORTUNITIES; // Are these dynamic from query parameters?
 
   // Memoize the filtering logic
   const filterTopicDataBySubtopic = useCallback(() => {
-    return filteredTopicData.filter((item) => item.subtopic === subTopic);
-  }, [filteredTopicData, subTopic]);
+    return filteredTopicData.filter((item) => item.subtopic === dataSubTopic);
+  }, [filteredTopicData, dataSubTopic]);
 
   // Memoize the filtered result
   const filteredTopicDataBySubtopicData = useMemo(filterTopicDataBySubtopic, [
@@ -33,21 +62,10 @@ const SummaryDetails = () => {
 
   // Memoize the filtering logic
   const filterSubtopic = useCallback(() => {
-    return summary.filter((item) => item.subtopic === subTopic);
-  }, [summary, subTopic]);
+    return summary.filter((item) => item.subtopic === dataSubTopic);
+  }, [summary, dataSubTopic]);
   // Memoize the filtered result
   const filteredSubtopicData = useMemo(filterSubtopic, [filterSubtopic]);
-
-  console.log(
-    "OVERVIEW DATA FILTERED BY SUBTOPIC... ",
-    filteredTopicDataBySubtopicData
-  );
-  console.log("FILTERED SUMMARY DATA... ", filteredSubtopicData);
-
-  useEffect(() => {
-    setTopicData(topicData.opportunityData);
-    setSummary(summaryData.opportunitySummary);
-  }, [topicData.opportunityData, summaryData.opportunitySummary]);
 
   return (
     <div className="flex w-fill flex-col">

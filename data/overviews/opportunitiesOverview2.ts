@@ -41,7 +41,7 @@ export const OPPORTUNITIES_OVERVIEW2: TopicComments[] = [
     comments_eng:
       "Use AI to make decisions for fire simulation. AI can be a huge bank for ideas and previously simulations with results, which can gather all previous simulations. And help us do new simulations that has not been done before. There is a lot of opportunities in fire simulations, fire technical solutions and more.",
     subtopic_relevance: "relevant",
-    subtopic: "Fire Simulation Innovation",
+    subtopic: "Fire Simulation Innovations",
   },
   {
     ID: 4,
@@ -109,6 +109,6 @@ export const OPPORTUNITIES_OVERVIEW2: TopicComments[] = [
     comments_eng:
       'Would be interesting to see the 2024-version of the scheme "% Emissions Related to Ramboll\'s Absolute Targets (from 2019)" presented in this module.',
     subtopic_relevance: "relevant",
-    subtopic: "Emission Targets Update",
+    subtopic: "Emissions Targets Update",
   },
 ];
