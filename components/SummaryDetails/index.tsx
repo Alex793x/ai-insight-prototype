@@ -7,6 +7,7 @@ import { TopicComments } from "../../types/TopicComments";
 import { SummaryContext } from "../../contexts/SummaryData";
 import { Summary } from "../../types/Summary";
 import { Card, CardBody, Divider } from "@nextui-org/react";
+import { SelectedSummaryTopicContext } from "../../contexts/SelectedSummaryJson";
 
 const SummaryDetails = () => {
   const topicData = useContext(DataContext);
@@ -14,6 +15,8 @@ const SummaryDetails = () => {
   const [currentTopic, setCurrentTopic] = useState<Topic>(Topic.OPPORTUNITIES);
   const [filteredTopicData, setTopicData] = useState<TopicComments[]>([]);
   const [summary, setSummary] = useState<Summary[]>([]);
+
+  const { dataTopic, dataSubTopic } = useContext(SelectedSummaryTopicContext);
 
   const subTopic = "Sustainability Training";
   const topic = Topic.OPPORTUNITIES; // Are these dynamic from query parameters?

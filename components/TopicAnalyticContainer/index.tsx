@@ -1,16 +1,25 @@
 "use client";
+
+// React Imports -----
 import React, { useContext, useEffect, useState } from "react";
+
+// NextUI imports --------
 import { Card, CardBody } from "@nextui-org/react";
 import { Divider } from "@nextui-org/react";
-import CustomPieChart from "../Piechart";
 import { CustomDropDownForFilters } from "../CustomDropDown";
 import { Button } from "@nextui-org/react";
+
+// Types import ---------
 import { Topic } from "@/types/Topic";
 import { TopicComments } from "@/types/TopicComments";
-import { DataContext } from "@/contexts/DataContext";
-import ChatbotButton from "../CustomButton";
 
-const availableCountries = ["Denmark", "Sweden", "Finland", "Germany"];
+// Context import -------
+import { DataContext } from "@/contexts/DataContext";
+
+// Components import -----
+import CustomPieChart from "@/components/Piechart";
+import ChatbotButton from "@/components/CustomButton";
+import { AvailableCountries } from "@/utilities/CustomAvailableCountries";
 
 type Props = {
   topicDescription: string;
@@ -31,7 +40,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
 
   useEffect(() => {
     const filterByChosenCountries = () => {
-      const selectedCountries = availableCountries.filter((country, index) =>
+      const selectedCountries = AvailableCountries.filter((country, index) =>
         selectedKeys.includes(index.toString())
       );
       return selectedCountries.map((country) => ({
@@ -117,7 +126,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
             <CustomDropDownForFilters
               selectedKeys={selectedKeys}
               setSelectedKeys={setSelectedKeys}
-              filterData={availableCountries}
+              filterData={AvailableCountries}
               filterName="Country"
             />
             <CustomDropDownForFilters filterName="Module" />

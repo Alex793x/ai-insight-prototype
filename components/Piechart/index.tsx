@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import { TopicComments } from "@/types/TopicComments";
 import { Topic } from "@/types/Topic";
 import { useRouter } from "next/navigation";
+import { SelectedSummaryTopicContext } from "../../contexts/SelectedSummaryJson";
 
 export const countSubtopicOccurrences = (
   topicCommentsList: TopicComments[]
@@ -32,12 +33,17 @@ type Props = {
 };
 
 const CustomPieChart = ({ inputData, currentTopic }: Props) => {
+  const { setDataTopic, setDataSubTopic } = useContext(
+    SelectedSummaryTopicContext
+  );
   const router = useRouter();
 
   const subTopicOccurrencesData = countSubtopicOccurrences(inputData);
 
   const handleClick = (event: any, data: any) => {
     const subTopicLabel = subTopicOccurrencesData[data.dataIndex].label;
+    setDataSubTopic(subTopicLabel);
+    setDataTopic(currentTopic);
     router.push("./summary");
   };
 
