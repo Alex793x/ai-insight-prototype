@@ -9,7 +9,7 @@ import { NextPage } from "next";
 const AI_InsightLandingPage: NextPage = () => {
     return (
         <div className="flex items-center w-full  flex-col">
-            <Tabs aria-label="Dynamic tabs">
+            <Tabs size="lg" aria-label="Dynamic tabs">
                 {CustomTabs.map((item) => (
                     <Tab key={item.id} title={item.topic}>
                         <TopicAnalyticContainer topic={item.topic} topicDescription={item.topicDescription} />

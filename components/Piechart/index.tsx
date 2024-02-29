@@ -11,30 +11,31 @@ export const countSubtopicOccurrences = (topicCommentsList: TopicComments[]): { 
 
   const counts = topicCommentsList.reduce((acc, { subtopic }) => {
     if (subtopic) acc[subtopic] = (acc[subtopic] || 0) + 1;
-      return acc;
+    return acc;
   }, {} as Record<string, number>);
 
 
   const result = Object.entries(counts).map(([label, value]) => ({
-      value,
-      label
+    value,
+    label
   }));
 
   return result;
 }
 
 const size = {
-  width: 1000,
-  height: 400,
+  width: 1200,
+  height: 600,
 };
 
 type Props = {
   inputData: TopicComments[];
   currentTopic: Topic
+  size: {width: number, height: number}
 }
 
-const CustomPieChart = ({inputData, currentTopic}: Props) => {
-  const {setDataTopic, setDataSubTopic} = useContext(SelectedSummaryTopicContext)
+const CustomPieChart = ({ inputData, currentTopic, size }: Props) => {
+  const { setDataTopic, setDataSubTopic } = useContext(SelectedSummaryTopicContext)
   const router = useRouter();
 
   const subTopicOccurencesData = countSubtopicOccurrences(inputData);
@@ -49,8 +50,8 @@ const CustomPieChart = ({inputData, currentTopic}: Props) => {
 
   return (
     <PieChart
-    onClick={(event, data) => handleClick(event, data)}
-    series={[
+      onClick={(event, data) => handleClick(event, data)}
+      series={[
         {
           arcLabel: (item) => `${item.value}`,
           arcLabelMinAngle: 10,
@@ -62,9 +63,12 @@ const CustomPieChart = ({inputData, currentTopic}: Props) => {
           fill: 'white',
           fontWeight: 'bold',
         },
+        '& .recharts-pie-label-line': {
+          fontSize: '20px', // Adjust the font size here for larger labels
+        },
       }}
       {...size}
-    />
+      />
   )
 }
 

@@ -105,7 +105,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
                     </CardBody>
                     <CardBody>
                         <div className="flex">
-                            <CustomPieChart currentTopic={currentTopic} inputData={data} />
+                            <CustomPieChart size={{width: 1500, height: 700}} currentTopic={currentTopic} inputData={data} />
                         </div>
                     </CardBody>
                 </div>
@@ -132,7 +132,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
                         <CardBody>
                             <div className="flex flex-col items-center justify-center">
                                 <h3 className="text-lg font-serif font-bold mb-4">{country}</h3>
-                                <CustomPieChart currentTopic={currentTopic} inputData={data} />
+                                <CustomPieChart size={{width: 1000, height: 400}} currentTopic={currentTopic} inputData={data} />
                             </div>
                         </CardBody>
                     </Card>
