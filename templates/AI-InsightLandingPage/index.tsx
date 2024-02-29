@@ -1,14 +1,14 @@
 "use client";
 import { NextPage } from "next";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TopicAnalyticContainer from "@/components/TopicAnalyticContainer";
 import { Topic } from "@/types/Topic";
+import { DataContext } from "@/contexts/DataContext";
 
 
 
 const AI_InsightLandingPage = () => {
-
     const customTabs = [
         {
             id: "Opportunities",
@@ -37,17 +37,15 @@ const AI_InsightLandingPage = () => {
         },
     ];
     return (
-        <>
-            <div className="flex items-center w-full flex-col">
-                <Tabs key={"light"} aria-label="Dynamic tabs" items={customTabs}>
-                    {(item) => (
-                        <Tab key={item.id} title={item.topic}>
-                            <TopicAnalyticContainer topic={item.topic} topicDescription={item.topicDescription} topicCount={item.topicCount}/>
-                        </Tab>
-                    )}
-                </Tabs>
-            </div>
-        </>
+        <div className="flex items-center w-full  flex-col">
+            <Tabs aria-label="Dynamic tabs">
+                {customTabs.map((item) => (
+                    <Tab key={item.id} title={item.topic}>
+                        <TopicAnalyticContainer topic={item.topic} topicDescription={item.topicDescription} />
+                    </Tab>
+                ))}
+            </Tabs>
+        </div >
     );
 };
 
