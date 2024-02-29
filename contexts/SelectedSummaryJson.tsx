@@ -1,28 +1,29 @@
-import { TopicComments } from '@/types/TopicComments';
-import React, { ReactNode, createContext } from 'react';
-import { OpportunitiesDataSet } from "@/data/opportunities_comments";
-import { LearningsDataSet } from '@/data/learnings_comments';
+"use client";
+import React, { Dispatch, ReactNode, SetStateAction, createContext, useState } from 'react';
+import { Topic } from '@/types/Topic';
 
-interface DataContextType {
-    opportunityData: TopicComments[];
-    operationData: TopicComments[];
-    learningsData: TopicComments[];
-    gapsData: TopicComments[];
+interface SelectedSummaryTopicContextType {
+    dataTopic: Topic;
+    setDataTopic: Dispatch<SetStateAction<Topic>>;
+    dataSubTopic: string | null;
+    setDataSubTopic: Dispatch<SetStateAction<string>>;
 }
-const defaultDataContextType: DataContextType = {
-    opportunityData: OpportunitiesDataSet,
-    operationData: OpportunitiesDataSet,
-    learningsData: LearningsDataSet,
-    gapsData: OpportunitiesDataSet,
-    
-}
-export const DataContext = createContext<DataContextType>(defaultDataContextType);
 
+const defaultSelectedSummaryTopicContextType: SelectedSummaryTopicContextType = {
+    dataTopic: Topic.OPPORTUNITIES,
+    setDataTopic: () => {},
+    dataSubTopic: null,
+    setDataSubTopic: () => {},
+};
 
-export const DataContextProvider = ({ children }: { children: ReactNode }) => {
+export const SelectedSummaryTopicContext = createContext<SelectedSummaryTopicContextType>(defaultSelectedSummaryTopicContextType);
+
+export const SelectedSummaryTopicContextProvider = ({ children }: { children: ReactNode }) => {
+    const [dataTopic, setDataTopic] = useState<Topic>(Topic.OPPORTUNITIES);
+    const [dataSubTopic, setDataSubTopic] = useState<string>("");
     return (
-        <DataContext.Provider value={defaultDataContextType}>
+        <SelectedSummaryTopicContext.Provider value={{ dataTopic, setDataTopic, dataSubTopic, setDataSubTopic }}>
             {children}
-        </DataContext.Provider>
+        </SelectedSummaryTopicContext.Provider>
     );
 };

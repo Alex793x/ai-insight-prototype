@@ -1,19 +1,26 @@
 "use client";
+
+// React Imports -----
 import React, { useContext, useEffect, useState } from "react";
+
+// Nextjs UI imports --------
 import { Card, CardBody, } from "@nextui-org/react";
 import { Divider } from "@nextui-org/react";
-import CustomPieChart from "../Piechart";
 import { CustomDropDownForFilters } from "../CustomDropDown";
 import { Button } from "@nextui-org/react";
+
+// Types import ---------
 import { Topic } from "@/types/Topic";
 import { TopicComments } from "@/types/TopicComments";
+
+// Context import -------
 import { DataContext } from "@/contexts/DataContext";
-import ChatbotButton from "../CustomButton";
 
+// Components import -----
+import CustomPieChart from "@/components/Piechart";
+import ChatbotButton from "@/components/CustomButton";
+import { AvailableCountries } from "@/utilities/CustomAvailableCountries";
 
-const avilableCountries = [
-    "Denmark", "Sweden", "Finland", "Germany"
-]
 
 type Props = {
     topicDescription: string
@@ -24,16 +31,7 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
     const [currentTopic, setCurrentTopic] = useState<Topic>(Topic.OPPORTUNITIES)
     const [data, setData] = useState<TopicComments[]>([])
-    const [isFiltering, setIsFiltering] = useState(false);
-
-    const filterByChosenCountries = () => {
-        const selectedCountries = avilableCountries.filter((country, index) => selectedKeys.includes(index.toString()));
-        return selectedCountries.map(country => ({
-            country,
-            data: data.filter(item => item.country === country),
-        }));
-    };
-
+    const [filteredCountries, setFilteredCountries] = useState<{ country: string; data: TopicComments[] }[]>([]);
 
 
     const handleDataSet = () => {
@@ -58,13 +56,42 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
 
     useEffect(() => {
         handleDataSet();
-    }, [topic])
+    }, [topic]);
 
     useEffect(() => {
-        if (selectedKeys.length === 0) {
-            setIsFiltering(false);
-        }
-    }, [selectedKeys])
+        // Filter the filteredCountries to include only those that are currently selected
+        const updatedFilteredCountries = filteredCountries.filter(filteredCountry =>
+            selectedKeys.includes(AvailableCountries.findIndex(country => country === filteredCountry.country).toString())
+        );
+    
+        // Update the state to reflect the current selections
+        setFilteredCountries(updatedFilteredCountries);
+    }, [selectedKeys]);
+
+
+    const applyFilters = () => {
+        // Filter out countries based on selected keys.
+        const newFilteredCountries = AvailableCountries.filter((_, index) => selectedKeys.includes(index.toString()))
+            .map(country => ({
+                country,
+                data: data.filter(item => item.country === country),
+            }));
+    
+        // Check if a country is already in the filteredCountries state before adding.
+        const updatedFilteredCountries = newFilteredCountries.reduce((acc, newCountry) => {
+            // Check if this country is already included in the filtered list.
+            const isAlreadyIncluded = acc.some(filteredCountry => filteredCountry.country === newCountry.country);
+            
+            // If it's not already included, add it to the accumulator.
+            if (!isAlreadyIncluded) {
+                acc.push(newCountry);
+            }
+            
+            return acc;
+        }, [...filteredCountries]);
+    
+        setFilteredCountries(updatedFilteredCountries);
+    };
 
     return (
         <>
@@ -88,32 +115,29 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
                 <CardBody >
                     <div className="flex justify-center gap-10">
                         <CustomDropDownForFilters filterName="Department" />
-                        <CustomDropDownForFilters selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} filterData={avilableCountries} filterName="Country" />
+                        <CustomDropDownForFilters selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} filterData={AvailableCountries} filterName="Country" />
                         <CustomDropDownForFilters filterName="Module" />
                         <CustomDropDownForFilters filterName="Role" />
-                        <Button onClick={() => { filterByChosenCountries() && setIsFiltering(true) }} color="success" className="text-white" variant="solid">
+                        <Button onClick={applyFilters} color="success" className="text-white" variant="solid">
                             + Filter
                         </Button>
                         <ChatbotButton />
                     </div>
                 </CardBody>
             </Card>
-            {isFiltering &&
-                filterByChosenCountries().map(({ country, data }) => (
-                    <div key={country} className="flex flex-col items-center justify-center w-full"> {/* Ensure key is on the root element and use flex-col for column orientation */}
-                        <Divider className="my-4" />
-                        <Card className="w-full"> {/* Adjust width as necessary */}
-                            <CardBody>
-                                <div className="flex flex-col items-center justify-center"> {/* Center content vertically and horizontally */}
-                                    <h3 className="text-lg font-serif font-bold mb-4">{country}</h3> {/* Display the country name with margin bottom */}
-                                    <CustomPieChart currentTopic={currentTopic} inputData={data} />
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
-                ))
-            }
-
+            {filteredCountries.map(({ country, data }, index) => (
+                <div key={index} className="flex flex-col items-center justify-center w-full">
+                    <Divider className="my-4" />
+                    <Card className="w-full">
+                        <CardBody>
+                            <div className="flex flex-col items-center justify-center">
+                                <h3 className="text-lg font-serif font-bold mb-4">{country}</h3>
+                                <CustomPieChart currentTopic={currentTopic} inputData={data} />
+                            </div>
+                        </CardBody>
+                    </Card>
+                </div>
+            ))}
         </>
     )
 }

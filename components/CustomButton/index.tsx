@@ -1,17 +1,10 @@
 "use client";
 import React from "react";
-import { Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
 
 
 const ChatbotButton = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const router = useRouter();
-
-    const handleSend = () => {
-        router.push("./summary");
-    }
-
     return (
         <>
             <Button onPress={onOpen} color="primary">Ask GPT</Button>
@@ -29,9 +22,11 @@ const ChatbotButton = () => {
                                 <Button color="danger" variant="light" onPress={onClose}>
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={handleSend}>
-                                    Send
-                                </Button>
+                                <Link href="/summary">
+                                    <Button color="primary">
+                                        Send
+                                    </Button>
+                                </Link>
                             </ModalFooter>
                         </>
                     )}
