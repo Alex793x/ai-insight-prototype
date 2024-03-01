@@ -75,7 +75,7 @@ const SummaryDetails = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="bg-white shadow rounded-lg p-4 m-2 w-5/6">
+      <div className="bg-white shadow rounded-lg p-4 m-2 w-3/4 ">
         <h1 className="text-3xl font-bold px-3 text-indigo-600 tracking-wide">
           Summary
         </h1>
@@ -95,12 +95,12 @@ const SummaryDetails = () => {
 
       <hr className="my-4" />
 
-      <div className="flex justify-between items-center px-9">
-        <h1 className="text-3xl font-bold text-indigo-600 tracking-wide">
+      <div className="flex justify-between">
+        <h1 className="text-3xl px-8 font-bold text-indigo-600 tracking-wide">
           Comments
         </h1>
         {filteredTopicDataBySubtopic.length > commentsPerPage && (
-          <div className="flex">
+          <div className="flex pr-8">
             {Array.from(
               {
                 length: Math.ceil(
@@ -125,7 +125,7 @@ const SummaryDetails = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 px-9">
+      <div className="grid grid-cols-3 gap-4">
         {currentComments.map((item) => (
           <div
             key={item.ID}

@@ -1,11 +1,9 @@
-"use client"
+"use client";
 
 import SummaryDetails from "@/components/SummaryDetails";
 
-
 const ExecutiveSummaryPage = () => {
-return (
-    <SummaryDetails />
-)};
+  return <SummaryDetails />;
+};
 
 export default ExecutiveSummaryPage;
