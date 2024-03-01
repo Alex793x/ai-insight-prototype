@@ -9,15 +9,20 @@ import { Summary } from "../../types/Summary";
 const SummaryDetails = () => {
   const summaryData = useContext(SummaryContext);
   const jsonTopicData = useContext(DataContext);
-  const [summary, setSummary] = useState<Summary[]>([]);
-  const [topicData, setTopicData] = useState<TopicComments[]>([]);
   const { dataTopic, dataSubTopic, isLCA } = useContext(
     SelectedSummaryTopicContext
   );
 
+  // States for summary and topic data
+  const [summary, setSummary] = useState<Summary[]>([]);
+  const [topicData, setTopicData] = useState<TopicComments[]>([]);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 6;
+
   useEffect(() => {
     const handleDataSet = () => {
-      console.log("IS LCA ========> ", isLCA);
       if (isLCA) {
         setSummary(summaryData.lcaSummary);
         setTopicData(jsonTopicData.lcaData);
@@ -38,20 +43,20 @@ const SummaryDetails = () => {
           case Topic.GAPS:
             setSummary(summaryData.gapsSummary);
             setTopicData(jsonTopicData.gapsData);
+            break;
+          default:
+            // Handle default case
+            break;
         }
       }
     };
     handleDataSet();
   }, [dataTopic, isLCA, jsonTopicData, summaryData]);
 
-  const filterTopicDataBySubtopic = useCallback(() => {
-    return topicData.filter((item) => item.subtopic === dataSubTopic);
-  }, [topicData, dataSubTopic]);
-
-  const filteredTopicDataBySubtopicData = useMemo(filterTopicDataBySubtopic, [
-    filterTopicDataBySubtopic,
-  ]);
-
+  const filteredTopicDataBySubtopic = useMemo(
+    () => topicData.filter((item) => item.subtopic === dataSubTopic),
+    [topicData, dataSubTopic]
+  );
   const filterSubtopic = useCallback(() => {
     return summary.filter((item) => item.subtopic === dataSubTopic);
   }, [summary, dataSubTopic]);
@@ -61,11 +66,19 @@ const SummaryDetails = () => {
     ? filteredSubtopicData[0].summary.split(".")
     : [];
 
-  console.log("SUMMARY   ", summary);
+  // Calculate the current comments to display based on pagination
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = filteredTopicDataBySubtopic.slice(
+    indexOfFirstComment,
+    indexOfLastComment
+  );
+
+  // Change page function
+  const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
 
   return (
     <div className="flex flex-col w-full">
-      {/* SUMMARY */}
       <div className="bg-white shadow rounded-lg p-4 m-2 w-5/6">
         <h1 className="text-3xl font-bold px-3 text-indigo-600 tracking-wide">
           Summary
@@ -85,17 +98,17 @@ const SummaryDetails = () => {
       </div>
 
       <hr className="my-4" />
-      {/* COMMENTS LIST */}
-      <h1 className=" px-9 text-3xl font-bold text-indigo-600 tracking-wide">
+
+      <h1 className="px-9 text-3xl font-bold text-indigo-600 tracking-wide">
         Comments
       </h1>
       <div className="grid grid-cols-3 gap-4">
-        {filteredTopicDataBySubtopicData.map((item) => (
+        {currentComments.map((item) => (
           <div
             key={item.ID}
             className="bg-white shadow rounded-lg p-4 m-2 flex flex-col justify-between h-full"
           >
-            <div className="flex flex-col">
+            <div>
               <p className="text-sm px-3 text-gray-500">
                 Country: {item.country}
               </p>
@@ -109,6 +122,32 @@ const SummaryDetails = () => {
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {filteredTopicDataBySubtopic.length > commentsPerPage && (
+        <div className="flex justify-center mt-4">
+          {Array.from(
+            {
+              length: Math.ceil(
+                filteredTopicDataBySubtopic.length / commentsPerPage
+              ),
+            },
+            (_, index) => index + 1
+          ).map((number) => (
+            <button
+              key={number}
+              onClick={() => paginate(number)}
+              className={`px-4 py-2 mx-1 ${
+                currentPage === number
+                  ? "bg-indigo-600 text-white"
+                  : "bg-gray-200"
+              }`}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
