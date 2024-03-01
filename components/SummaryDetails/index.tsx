@@ -57,14 +57,6 @@ const SummaryDetails = () => {
     () => topicData.filter((item) => item.subtopic === dataSubTopic),
     [topicData, dataSubTopic]
   );
-  const filterSubtopic = useCallback(() => {
-    return summary.filter((item) => item.subtopic === dataSubTopic);
-  }, [summary, dataSubTopic]);
-
-  const filteredSubtopicData = useMemo(filterSubtopic, [filterSubtopic]);
-  const filteredSingleSubtopicData = filteredSubtopicData.length
-    ? filteredSubtopicData[0].summary.split(".")
-    : [];
 
   // Calculate the current comments to display based on pagination
   const indexOfLastComment = currentPage * commentsPerPage;
@@ -75,7 +67,7 @@ const SummaryDetails = () => {
   );
 
   // Change page function
-  const paginate = (pageNumber: any) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="flex flex-col w-full">
@@ -83,26 +75,43 @@ const SummaryDetails = () => {
         <h1 className="text-3xl font-bold px-3 text-indigo-600 tracking-wide">
           Summary
         </h1>
-        <div className="flex flex-col justify-start h-full">
-          <ul className="list-disc list-inside text-base font-sans p-3">
-            {filteredSingleSubtopicData.map(
-              (point, index) =>
-                point.trim() !== "" && (
-                  <li key={index} className="text-left">
-                    {point}
-                  </li>
-                )
-            )}
-          </ul>
-        </div>
+        {/* Summary content here */}
       </div>
 
       <hr className="my-4" />
 
-      <h1 className="px-9 text-3xl font-bold text-indigo-600 tracking-wide">
-        Comments
-      </h1>
-      <div className="grid grid-cols-3 gap-4">
+      {/* Comments Title and Pagination Controls */}
+      <div className="flex justify-between items-center px-9">
+        <h1 className="text-3xl font-bold text-indigo-600 tracking-wide">
+          Comments
+        </h1>
+        {filteredTopicDataBySubtopic.length > commentsPerPage && (
+          <div className="flex">
+            {Array.from(
+              {
+                length: Math.ceil(
+                  filteredTopicDataBySubtopic.length / commentsPerPage
+                ),
+              },
+              (_, index) => index + 1
+            ).map((number) => (
+              <button
+                key={number}
+                onClick={() => paginate(number)}
+                className={`px-4 py-2 mx-1 ${
+                  currentPage === number
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                {number}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 px-9">
         {currentComments.map((item) => (
           <div
             key={item.ID}
@@ -122,32 +131,6 @@ const SummaryDetails = () => {
           </div>
         ))}
       </div>
-
-      {/* Pagination Controls */}
-      {filteredTopicDataBySubtopic.length > commentsPerPage && (
-        <div className="flex justify-center mt-4">
-          {Array.from(
-            {
-              length: Math.ceil(
-                filteredTopicDataBySubtopic.length / commentsPerPage
-              ),
-            },
-            (_, index) => index + 1
-          ).map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`px-4 py-2 mx-1 ${
-                currentPage === number
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200"
-              }`}
-            >
-              {number}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
