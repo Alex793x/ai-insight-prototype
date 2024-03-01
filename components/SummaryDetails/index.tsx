@@ -13,11 +13,9 @@ const SummaryDetails = () => {
     SelectedSummaryTopicContext
   );
 
-  // States for summary and topic data
   const [summary, setSummary] = useState<Summary[]>([]);
   const [topicData, setTopicData] = useState<TopicComments[]>([]);
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 6;
 
@@ -45,7 +43,6 @@ const SummaryDetails = () => {
             setTopicData(jsonTopicData.gapsData);
             break;
           default:
-            // Handle default case
             break;
         }
       }
@@ -58,7 +55,15 @@ const SummaryDetails = () => {
     [topicData, dataSubTopic]
   );
 
-  // Calculate the current comments to display based on pagination
+  const filteredSubtopicData = useMemo(
+    () => summary.filter((item) => item.subtopic === dataSubTopic),
+    [summary, dataSubTopic]
+  );
+
+  const filteredSingleSubtopicData = filteredSubtopicData.length
+    ? filteredSubtopicData[0].summary.split(". ")
+    : [];
+
   const indexOfLastComment = currentPage * commentsPerPage;
   const indexOfFirstComment = indexOfLastComment - commentsPerPage;
   const currentComments = filteredTopicDataBySubtopic.slice(
@@ -66,7 +71,6 @@ const SummaryDetails = () => {
     indexOfLastComment
   );
 
-  // Change page function
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -75,12 +79,22 @@ const SummaryDetails = () => {
         <h1 className="text-3xl font-bold px-3 text-indigo-600 tracking-wide">
           Summary
         </h1>
-        {/* Summary content here */}
+        <div className="flex flex-col justify-start h-full">
+          <ul className="list-disc list-inside text-base font-sans p-3">
+            {filteredSingleSubtopicData.map(
+              (point, index) =>
+                point.trim() !== "" && (
+                  <li key={index} className="text-left">
+                    {point}
+                  </li>
+                )
+            )}
+          </ul>
+        </div>
       </div>
 
       <hr className="my-4" />
 
-      {/* Comments Title and Pagination Controls */}
       <div className="flex justify-between items-center px-9">
         <h1 className="text-3xl font-bold text-indigo-600 tracking-wide">
           Comments
