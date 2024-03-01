@@ -101,12 +101,12 @@ const TopicAnalyticContainer = ({ topicDescription, topic }: Props) => {
               }}
             >
               <p
-                className="pb-20 px-20 font-bold font-serif text-center"
+                className="pb-20 px-10 font-semibold text-base font-sans text-start"
                 style={{ margin: "auto" }}
               >
                 {topicDescription}
               </p>
-              <p className="text-start">
+              <p className="text-start text-base font-sans p-10">
                 Total comments analyzed: <strong>{data.length}</strong>
               </p>
             </div>
