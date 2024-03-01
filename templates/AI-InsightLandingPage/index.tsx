@@ -1,54 +1,30 @@
 "use client";
-import { NextPage } from "next";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
+import { Tabs, Tab } from "@nextui-org/react";
 import TopicAnalyticContainer from "@/components/TopicAnalyticContainer";
-import { Topic } from "@/types/Topic";
+import { CustomTabs } from "@/utilities/CustomTabs";
+import { NextPage } from "next";
+import Image from "next/image";
 
+const AI_InsightLandingPage: NextPage = () => {
+  return (
+    <div className="relative flex items-center w-full flex-col">
+      {/* Absolute positioned SVG image */}
+      <div className="absolute top-1 left-1">
+        <Image src="/vercel.svg" alt="Logo" width={100} height={100} />
+      </div>
 
-
-const AI_InsightLandingPage = () => {
-
-    const customTabs = [
-        {
-            id: "Opportunities",
-            topic: Topic.OPPORTUNITIES,
-            topicDescription: "These are the top most important 5 opportunities. It provides insights into the top 5 opportunities based on current market trends and analysis.",
-            topicCount: 4000
-
-        },
-        {
-            id: "Operations",
-            topic: Topic.OPERATIONS,
-            topicDescription: "This is your top 5 Operations chart overview. It provides insights into the top 5 Operations based on current market trends and analysis.",
-            topicCount: 3500
-        },
-        {
-            id: "Learnings",
-            topic: Topic.LEARNINGS,
-            topicDescription: "This is your top 5 Learnings chart overview. It provides insights into the top 5 Learnings based on current market trends and analysis.",
-            topicCount: 2000
-        },
-        {
-            id: "Gaps",
-            topic: Topic.GAPS,
-            topicDescription: "This is your top 5 Gaps chart overview. It provides insights into the top 5 Gaps based on current market trends and analysis.",
-            topicCount: 3000
-        },
-    ];
-    return (
-        <>
-            <div className="flex items-center w-full flex-col">
-                <Tabs key={"light"} aria-label="Dynamic tabs" items={customTabs}>
-                    {(item) => (
-                        <Tab key={item.id} title={item.topic}>
-                            <TopicAnalyticContainer topic={item.topic} topicDescription={item.topicDescription} topicCount={item.topicCount}/>
-                        </Tab>
-                    )}
-                </Tabs>
-            </div>
-        </>
-    );
+      <Tabs aria-label="Dynamic tabs">
+        {CustomTabs.map((item) => (
+          <Tab key={item.id} title={item.topic}>
+            <TopicAnalyticContainer
+              topic={item.topic}
+              topicDescription={item.topicDescription}
+            />
+          </Tab>
+        ))}
+      </Tabs>
+    </div>
+  );
 };
 
 export default AI_InsightLandingPage;

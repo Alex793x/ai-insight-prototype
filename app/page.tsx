@@ -5,5 +5,5 @@ export default function Home() {
 
   return (
     <AI_InsightLandingPage />
-  );
+  )
 }
